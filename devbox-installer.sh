@@ -7,6 +7,7 @@ yellow="\033[33m"
 green="\033[32m"
 grey="\033[90m"
 black="\033[0m"
+os=$(uname | tr '[:upper:]' '[:lower:]') # 'linux' or 'darwin'
 
 generate_git_key() {
   if [ ! -f "$HOME/.ssh/id_rsa" ]; then
@@ -18,6 +19,13 @@ generate_git_key() {
   fi
 
   chmod 400 $HOME/.ssh/id_rsa
+
+  if [ "$os" = "linux" ]; then
+    if ! ps -p "$SSH_AGENT_PID" > /dev/null 2>&1; then
+      eval `ssh-agent -s` > /dev/null 2>&1
+    fi
+  fi
+
   ssh-add $HOME/.ssh/id_rsa
 }
 
@@ -57,8 +65,6 @@ fix_known_hosts() {
     ssh-keyscan github.com >> $HOME/.ssh/known_hosts
   fi
 }
-
-echo "get devbox"
 
 # 1. Check Git SSH key
 fix_known_hosts
