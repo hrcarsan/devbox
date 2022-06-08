@@ -81,4 +81,4 @@ echo -e "${green}Your GitHub SSH key ready to use!${black}"
 # 2. Clone ink.devbox repo
 echo "cloning repo"
 
-} # End of wrapping
+} # End of wrapping - v1
