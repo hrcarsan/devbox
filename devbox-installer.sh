@@ -30,18 +30,9 @@ generate_git_key() {
 }
 
 validate_git_key() {
-  echo -e "${blue}Validating GitHub SSH key ~/.ssh/id_rsa ...${black}"
-
   if ! git ls-remote git@github.com:inkaviation/ink.devbox.git > /dev/null 2>&1; then
-    err="~/.ssh/id_rsa is not associated yet with your GitHub "
-    err+="account or you don't have permissions\n"
-    echo -e "${yellow}${err}${black}"
-    get_public_git_key
     return 1
   fi
-
-  echo -e "${green}SSH key ready to use!${black}"
-  exit 0
 }
 
 get_public_git_key() {
@@ -69,12 +60,23 @@ fix_known_hosts() {
 # 1. Check Git SSH key
 fix_known_hosts
 generate_git_key
+echo -e "${blue}Validating GitHub SSH key ~/.ssh/id_rsa ...${black}"
 validate_git_key
 
-echo $?
-#while [ $? -ne 0 ]; do
-  #validate_git_key
-#done
+if [ $? -ne 0 ]; then
+  msg="Your SSH key is not associated yet with your GitHub account or you don't have permissions\n"
+  echo -e "${yellow}${msg}${black}"
+  get_public_git_key
+  echo -e "${yellow}Also verify your GitHub account permissions with your supervisor${black}"
+
+  false
+  while [ $? -ne 0 ]; do
+    sleep 5
+    validate_git_key
+  done
+fi
+
+echo -e "${green}Your GitHub SSH key ready to use!${black}"
 
 # 2. Clone ink.devbox repo
 echo "cloning repo"
