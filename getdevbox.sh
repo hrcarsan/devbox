@@ -35,7 +35,8 @@ get_public_git_key() {
   printf "${yellow}<<<<< to here${black}\n\n"
 
   echo -e "${blue}Also verify your GitHub account permissions with your supervisor${black}\n"
-  echo -e "${blue}The installation will continue automatically after you associate the key and have the correct permissions${black}"
+  echo -e "The installation will continue automatically after you associate"\
+          "the key and have the correct permissions..."
 }
 
 fix_known_hosts() {
@@ -81,4 +82,4 @@ echo -e "${green}Your GitHub SSH key ready to use!${black}"
 # 2. Clone ink.devbox repo
 echo "cloning repo"
 
-} # End of wrapping - v2
+} # End of wrapping - v3
