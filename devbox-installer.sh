@@ -14,7 +14,7 @@ generate_git_key() {
     read -p "Enter your GitHub email: " github_email
     ssh-keygen -t rsa -C "$github_email" -N "" -f $HOME/.ssh/id_rsa -q
     echo ""
-    return 0
+    exit 0
   fi
 
   chmod 400 $HOME/.ssh/id_rsa
@@ -24,10 +24,10 @@ generate_git_key() {
 validate_git_key() {
   echo -e "${yellow}Validating GitHub SSH key ~/.ssh/id_rsa ...${black}"
 
-  if ! git ls-remote git@github.com:inkaviation/ink.devbox.git >/dev/null; then
+  if ! git ls-remote git@github.com:inkaviation/ink.devbox.git > /dev/null 2>&1; then
     err="~/.ssh/id_rsa is not associated yet with your GitHub "
     err+="account or you don't have permissions\n\n"
-    echo -e "${yellow}$err${$black}"
+    echo -e "${yellow}${err}${black}"
     get_public_git_key
     exit 1
   fi
@@ -38,8 +38,7 @@ validate_git_key() {
 
 get_public_git_key() {
   if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
-    ink err "~/.ssh/id_rsa.pub not found"
-    exit 1
+    ssh-keygen -y -f $HOME/.ssh/id_rsa >> $HOME/.ssh/id_rsa.pub
   fi
 
   printf "\033[32mGo to your Github account "
