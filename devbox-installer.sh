@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -i
 
 { # Prevent execution if this script was only partially downloaded
 
@@ -68,7 +68,7 @@ if [ $? -ne 0 ]; then
   get_public_git_key
   echo -e "${yellow}Also verify your GitHub account permissions with your supervisor${black}\n"
 
-  echo -e "${blue}The installation will continue automatically after you associate the key and fix permissions${black}\n"
+  echo -e "${blue}The installation will continue automatically after you associate the key and have the correct permissions${black}\n"
 
   false
   while [ $? -ne 0 ]; do
