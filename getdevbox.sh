@@ -81,5 +81,7 @@ echo -e "${green}Your GitHub SSH key ready to use!${black}"
 
 # 2. Clone ink.devbox repo
 echo "cloning repo"
+INK_DEVBOX_HOME=$HOME/.ink/devbox
+git clone git@github.com:inkaviation/ink.devbox.git $INK_DEVBOX_HOME
 
-} # End of wrapping - v3
+} # End of wrapping - v4
