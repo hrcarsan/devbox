@@ -10,7 +10,7 @@ black="\033[0m"
 os=$(uname | tr '[:upper:]' '[:lower:]') # 'linux' or 'darwin'
 
 generate_git_key() {
-  echo -e "${blue}Generating SSH key...${black}"
+  echo -e "${black}Generating GitHub SSH key...${black}"
   ssh-keygen -t rsa -C "" -N "" -f $HOME/.ssh/id_rsa -q
   echo -e "${green}Private ~/.ssh/id_rsa and public ~/.ssh/id_rsa.pub keys generated!${black}"
 }
@@ -26,13 +26,16 @@ get_public_git_key() {
     ssh-keygen -y -f $HOME/.ssh/id_rsa >> $HOME/.ssh/id_rsa.pub
   fi
 
-  printf "${yellow}Go to your Github account "
+  printf "\n${blue}Go to your Github account "
   printf "Settings > SSH and GPG keys section and add your SSH key pasting the public contents\n"
   printf "https://github.com/settings/ssh/new${black}\n"
 
   printf "\n${yellow}Copy the public key contents from here >>>>>${black}\n"
   cat $HOME/.ssh/id_rsa.pub
   printf "${yellow}<<<<< to here${black}\n\n"
+
+  echo -e "${blue}Also verify your GitHub account permissions with your supervisor${black}\n"
+  echo -e "${blue}The installation will continue automatically after you associate the key and have the correct permissions${black}"
 }
 
 fix_known_hosts() {
@@ -50,7 +53,7 @@ if [ ! -f "$HOME/.ssh/id_rsa" ]; then
   generate_git_key
 else
   chmod 400 $HOME/.ssh/id_rsa
-  echo -e "${blue}Validating existing SSH key ~/.ssh/id_rsa...${black}\n"
+  echo -e "${black}Validating existing SSH key ~/.ssh/id_rsa...${black}"
 fi
 
 #if [ "$os" = "linux" ]; then
@@ -65,9 +68,6 @@ validate_git_key
 
 if [ $? -ne 0 ]; then
   get_public_git_key
-  echo -e "${yellow}Also verify your GitHub account permissions with your supervisor${black}\n"
-
-  echo -e "${blue}The installation will continue automatically after you associate the key and have the correct permissions${black}\n"
 
   false
   while [ $? -ne 0 ]; do
@@ -81,4 +81,4 @@ echo -e "${green}Your GitHub SSH key ready to use!${black}"
 # 2. Clone ink.devbox repo
 echo "cloning repo"
 
-} # End of wrapping - v1
+} # End of wrapping - v2
