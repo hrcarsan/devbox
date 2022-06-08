@@ -10,22 +10,9 @@ black="\033[0m"
 os=$(uname | tr '[:upper:]' '[:lower:]') # 'linux' or 'darwin'
 
 generate_git_key() {
-  if [ ! -f "$HOME/.ssh/id_rsa" ]; then
-    echo -e "${blue}Generating SSH key...${black}"
-    read -p "Enter your GitHub email: " github_email
-    ssh-keygen -t rsa -C "$github_email" -N "" -f $HOME/.ssh/id_rsa -q
-    echo ""
-  fi
-
-  chmod 400 $HOME/.ssh/id_rsa
-
-  if [ "$os" = "linux" ]; then
-    if ! ps -p "$SSH_AGENT_PID" > /dev/null 2>&1; then
-      eval `ssh-agent -s` > /dev/null 2>&1
-    fi
-  fi
-
-  ssh-add $HOME/.ssh/id_rsa > /dev/null 2>&1
+  echo -e "${blue}Generating SSH key...${black}"
+  ssh-keygen -t rsa -C "" -N "" -f $HOME/.ssh/id_rsa -q
+  echo -e "${green}Private ~/.ssh/id_rsa and public ~/.ssh/id_rsa.pub keys generated!${black}"
 }
 
 validate_git_key() {
@@ -58,8 +45,22 @@ fix_known_hosts() {
 
 # 1. Check Git SSH key
 fix_known_hosts
-generate_git_key
-echo -e "${blue}Validating your GitHub SSH key ~/.ssh/id_rsa...${black}\n"
+
+if [ ! -f "$HOME/.ssh/id_rsa" ]; then
+  generate_git_key
+else
+  chmod 400 $HOME/.ssh/id_rsa
+  echo -e "${blue}Validating existing SSH key ~/.ssh/id_rsa...${black}\n"
+fi
+
+#if [ "$os" = "linux" ]; then
+  #if ! ps -p "$SSH_AGENT_PID" > /dev/null 2>&1; then
+    #eval `ssh-agent -s` > /dev/null 2>&1
+  #fi
+#fi
+
+#ssh-add $HOME/.ssh/id_rsa > /dev/null 2>&1
+
 validate_git_key
 
 if [ $? -ne 0 ]; then
