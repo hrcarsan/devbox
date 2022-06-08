@@ -26,15 +26,15 @@ generate_git_key() {
     fi
   fi
 
-  ssh-add $HOME/.ssh/id_rsa
+  ssh-add $HOME/.ssh/id_rsa > /dev/null 2>&1
 }
 
 validate_git_key() {
-  echo -e "${yellow}Validating GitHub SSH key ~/.ssh/id_rsa ...${black}"
+  echo -e "${blue}Validating GitHub SSH key ~/.ssh/id_rsa ...${black}"
 
   if ! git ls-remote git@github.com:inkaviation/ink.devbox.git > /dev/null 2>&1; then
     err="~/.ssh/id_rsa is not associated yet with your GitHub "
-    err+="account or you don't have permissions\n\n"
+    err+="account or you don't have permissions\n"
     echo -e "${yellow}${err}${black}"
     get_public_git_key
     exit 1
@@ -49,13 +49,13 @@ get_public_git_key() {
     ssh-keygen -y -f $HOME/.ssh/id_rsa >> $HOME/.ssh/id_rsa.pub
   fi
 
-  printf "\033[32mGo to your Github account "
+  printf "${blue}Go to your Github account "
   printf "Settings > SSH and GPG keys section and add your SSH key pasting the public contents\n"
-  printf "https://github.com/settings/ssh/new\033[0m\n"
+  printf "https://github.com/settings/ssh/new${black}\n"
 
-  printf "\n\033[33mCopy the public key contents from here >>>>>\033[0m\n"
+  printf "\n${yellow}Copy the public key contents from here >>>>>${black}\n"
   cat $HOME/.ssh/id_rsa.pub
-  printf "\033[33m<<<<< to here\033[0m\n"
+  printf "${yellow}<<<<< to here${black}\n"
 }
 
 fix_known_hosts() {
@@ -71,9 +71,10 @@ fix_known_hosts
 generate_git_key
 validate_git_key
 
-while [ $? -ne 0 ]; do
-  validate_git_key
-done
+echo $?
+#while [ $? -ne 0 ]; do
+  #validate_git_key
+#done
 
 # 2. Clone ink.devbox repo
 echo "cloning repo"
