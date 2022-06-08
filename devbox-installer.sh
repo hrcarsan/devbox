@@ -46,7 +46,7 @@ get_public_git_key() {
 
   printf "\n${yellow}Copy the public key contents from here >>>>>${black}\n"
   cat $HOME/.ssh/id_rsa.pub
-  printf "${yellow}<<<<< to here${black}\n"
+  printf "${yellow}<<<<< to here${black}\n\n"
 }
 
 fix_known_hosts() {
@@ -60,11 +60,11 @@ fix_known_hosts() {
 # 1. Check Git SSH key
 fix_known_hosts
 generate_git_key
-echo -e "${blue}Validating GitHub SSH key ~/.ssh/id_rsa ...${black}"
+echo -e "${blue}Validating your GitHub SSH key ~/.ssh/id_rsa...${black}\n"
 validate_git_key
 
 if [ $? -ne 0 ]; then
-  msg="Your SSH key is not associated yet with your GitHub account or you don't have permissions\n"
+  msg="Warning: Your SSH key is not associated yet with your GitHub account or you don't have permissions\n"
   echo -e "${yellow}${msg}${black}"
   get_public_git_key
   echo -e "${yellow}Also verify your GitHub account permissions with your supervisor${black}"
