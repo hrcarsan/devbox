@@ -37,7 +37,7 @@ validate_git_key() {
     err+="account or you don't have permissions\n"
     echo -e "${yellow}${err}${black}"
     get_public_git_key
-    exit 1
+    return 1
   fi
 
   echo -e "${green}SSH key ready to use!${black}"
