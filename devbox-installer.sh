@@ -11,11 +11,10 @@ os=$(uname | tr '[:upper:]' '[:lower:]') # 'linux' or 'darwin'
 
 generate_git_key() {
   if [ ! -f "$HOME/.ssh/id_rsa" ]; then
-    echo -e "Generating SSH key..."
+    echo -e "${blue}Generating SSH key...${black}"
     read -p "Enter your GitHub email: " github_email
     ssh-keygen -t rsa -C "$github_email" -N "" -f $HOME/.ssh/id_rsa -q
     echo ""
-    exit 0
   fi
 
   chmod 400 $HOME/.ssh/id_rsa
@@ -40,7 +39,7 @@ get_public_git_key() {
     ssh-keygen -y -f $HOME/.ssh/id_rsa >> $HOME/.ssh/id_rsa.pub
   fi
 
-  printf "${blue}Go to your Github account "
+  printf "${yellow}Go to your Github account "
   printf "Settings > SSH and GPG keys section and add your SSH key pasting the public contents\n"
   printf "https://github.com/settings/ssh/new${black}\n"
 
@@ -64,8 +63,8 @@ echo -e "${blue}Validating your GitHub SSH key ~/.ssh/id_rsa...${black}\n"
 validate_git_key
 
 if [ $? -ne 0 ]; then
-  msg="Warning: Your SSH key is not associated yet with your GitHub account or you don't have permissions\n"
-  echo -e "${yellow}${msg}${black}"
+  #msg="Your SSH key is not associated yet with your GitHub account\n"
+  #echo -e "${yellow}${msg}${black}"
   get_public_git_key
   echo -e "${yellow}Also verify your GitHub account permissions with your supervisor${black}\n"
 
