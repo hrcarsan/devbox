@@ -47,6 +47,16 @@ fix_known_hosts() {
   fi
 }
 
+echo -e "${blue}\
+    ____      __
+   /  _/___  / /__
+   / // __ \/ //_/
+ _/ // / / / ,<
+/___/_/ /_/_/|_|
+${black}"
+
+echo -e "${blue}Ink DevBox Installer${black}"
+
 # 1. Check Git SSH key
 fix_known_hosts > /dev/null 2>&1
 
@@ -104,6 +114,6 @@ case "$OS" in
   ;;
 esac
 
-printf "${green}Ink DevBox installed!${black}\n"
+printf "${green}Installation complete!${black}\n"
 
 } # End of wrapping

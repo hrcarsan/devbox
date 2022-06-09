@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Usage: source <(curl -fsSL https://raw.githubusercontent.com/hrcarsan/devbox/master/getdevbox.sh)
+
 { # Prevent execution if this script was only partially downloaded
 
 bash <(curl -fsSL https://raw.githubusercontent.com/hrcarsan/devbox/master/devbox-installer.sh)
